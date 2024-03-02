@@ -7,7 +7,7 @@ const {protect, authorize} = require('../middleware/auth');
 
 
 router.use('/:carId/bookings/',bookingRouter);
-router.route('/').get(getCars).post(protect, authorize('admin'), createCar);
-router.route('/:id').get(getCar).put(protect,authorize('admin'), updateCar).delete(protect, authorize('admin'), deleteCar);
+router.route('/').get(getCars).post(protect, authorize('admin','provider'), createCar);
+router.route('/:id').get(getCar).put(protect,authorize('admin','provider'), updateCar).delete(protect, authorize('admin','provider'), deleteCar);
 
 module.exports = router;
