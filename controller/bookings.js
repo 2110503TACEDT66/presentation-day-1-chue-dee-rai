@@ -13,35 +13,31 @@ exports.getBookings = async (req,res,next)=>{
             select:'name province tel'
         });
     } else {
-        if(req.user.role === "user"){
-            query = Booking.find
-        }{
-            if(req.user.role === "provider"){
-                let myid = (await Car.find({provider:req.user.id},{_id:1})).toLocaleString();
-                let array = (await myid).split("'");
-                const array1 = [];
-                for(let i = 0;i < array.length;i++){
-                    if(i%4 === 3) array1.push(array[i]);
-                }
+        if(req.user.role === "provider"){
+            let myid = (await Car.find({provider:req.user.id},{_id:1})).toLocaleString();
+            let array = (await myid).split("'");
+            const array1 = [];
+            for(let i = 0;i < array.length;i++){
+                if(i%4 === 3) array1.push(array[i]);
+            }
 
-                query = Booking.find({car:array1}).populate({
+            query = Booking.find({car:array1}).populate({
+                path:'car',
+                select:'name province tel'
+            });
+        } else if(req.user.role === "admin")
+        {
+            if(req.params.carID) {
+                console.log(req.params.carID);
+                query = Booking.find({car:req.params.carID}).populate({
                     path:'car',
                     select:'name province tel'
                 });
-            } else if(req.user.role === "admin")
-            {
-                if(req.params.carID) {
-                    console.log(req.params.carID);
-                    query = Booking.find({car:req.params.carID}).populate({
-                        path:'car',
-                        select:'name province tel'
-                    });
-                } else {
-                    query = Booking.find().populate({
-                        path:'car',
-                        select:'name province tel'
-                    });
-                }
+            } else {
+                query = Booking.find().populate({
+                    path:'car',
+                    select:'name province tel'
+                });
             }
         }
     }
