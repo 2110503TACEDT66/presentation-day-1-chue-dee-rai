@@ -31,6 +31,11 @@ const CarSchema = new mongoose.Schema({
     region:{
         type: String,
         required: [true, 'Please add a region']
+    },
+    provider:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: true
     }
 },{
     toJSON: {virtuals:true},
