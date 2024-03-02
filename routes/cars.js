@@ -1,5 +1,5 @@
 const express = require('express');
-const {getCars, getCar, createCar, updateCar, deleteCar} = require('../controllers/hospitals');
+const {getCars, getCar, createCar, updateCar, deleteCar} = require('../controllers/cars');
 const router= express.Router();
 
 const bookingRouter = require('./bookings');
