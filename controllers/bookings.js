@@ -105,6 +105,18 @@ exports.addBooking = async (req,res,next)=>{
         if(existedBooking.length >= 3 && req.user.role !== 'admin') {
             return res.status(400).json({success:false,message:`The user with ID ${req.user.id} has already made 3 bookings`})
         }
+
+        //Check time overlap
+        const findCar = await Booking.find({car:req.params.carId});
+        let cant = false;
+        findCar.forEach(element => {
+            if(element.startDate < req.body.endDate && element.endDate > req.body.endDate) cant = true;
+            else if(element.startDate < req.body.startDate && element.endDate > req.body.startDate) cant = true;
+            else if(element.startDate > req.body.startDate && element.endDate < req.body.endDate) cant = true;
+        });
+        if(cant) {
+            return res.status(400).json({success:false,message:`Car is in use this range time`});
+        }
         
         const booking = await Booking.create(req.body);
         res.status(201).json({success:true,data:booking});
