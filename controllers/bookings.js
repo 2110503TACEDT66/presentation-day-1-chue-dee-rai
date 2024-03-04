@@ -110,9 +110,9 @@ exports.addBooking = async (req,res,next)=>{
         const findCar = await Booking.find({car:req.params.carId});
         let cant = false;
         findCar.forEach(element => {
-            if(element.startDate < req.body.endDate && element.endDate > req.body.endDate) cant = true;
-            else if(element.startDate < req.body.startDate && element.endDate > req.body.startDate) cant = true;
-            else if(element.startDate > req.body.startDate && element.endDate < req.body.endDate) cant = true;
+            if(Date(element.startDate) <= Date(req.body.endDate) && Date(element.endDate) >= Date(req.body.endDate)) cant = true;
+            else if(Date(element.startDate) <= Date(req.body.startDate) && Date(element.endDate) >= Date(req.body.startDate)) cant = true;
+            else if(Date(element.startDate) >= Date(req.body.startDate) && Date(element.endDate) <= Date(req.body.endDate)) cant = true;
         });
         if(cant) {
             return res.status(400).json({success:false,message:`Car is in use this range time`});
