@@ -35,7 +35,12 @@ const CarSchema = new mongoose.Schema({
     provider:{
         type: mongoose.Schema.ObjectId,
         ref: 'User',
-        required: true
+        required: [true, 'Please add provider']
+    },
+    licensePlate: {
+        type:String,
+        require:[true, 'Please add licensePlate'],
+        unique:true
     }
 },{
     toJSON: {virtuals:true},
